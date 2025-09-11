@@ -24,18 +24,18 @@ st.markdown(
     """
     <style>
     .weather-card {
-        position: fixed;
-        top: 70px;
-        right:44px;
-        width: 320px;
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        color: #e5e7eb;
-        padding: 14px 16px;
-        border-radius: 14px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        border: 1px solid rgba(255,255,255,0.08);
-        z-index: 100;
-    }
+    position: fixed;
+    top: 60px;        
+    right: 75px;      
+    width: 280px;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    color: #e5e7eb;
+    padding: 14px 16px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    z-index: 1000; /* always on top */
+}
     .weather-card h4 { margin: 0 0 6px 0; font-weight: 700; }
     .weather-card p { margin: 0; }
     .weather-badges { font-size: 12px; color: #9ca3af; margin-top: 6px; }
@@ -43,6 +43,20 @@ st.markdown(
     @media (max-width: 900px) {
         .weather-card { position: static; width: 100%; margin-top: 12px; }
     }
+
+    /* Fixed footer just above the bottom chat input */
+    .powered-footer {
+    margin-top: 12px;       /* space after chat input */
+    width: 100%;
+    text-align: center;
+    background: rgba(17, 24, 39, 0.85);
+    color: #d1d5db;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -87,7 +101,6 @@ with st.sidebar:
     # Settings
     st.subheader("⚙️ Settings")
     default_city = st.text_input("Default City", value="Napa, CA")
-    #model_temp = st.slider("Model Temperature", 0.0, 1.0, 0.2, 0.1)
     
     st.divider()
     
@@ -103,22 +116,21 @@ with col1:
     st.title("🍷 Wine Business Concierge")
     st.caption("Ask about our wines, get weather updates, or search for latest news!")
 
-with col2:
-    # Weather display in top right
-    try:
-        from agent.tools import current_weather
-        # Use sidebar-controlled default city
-        weather_data = current_weather(default_city)
-        st.markdown(f"""
-        <div class="weather-card">
-            <h4>🌤️ {weather_data['city']}</h4>
-            <p style="font-size: 22px; font-weight: 800;">{weather_data['temperature']}°C</p>
-            <p style="color: #d1d5db;">{weather_data['conditions'].title()}</p>
-            <p class="weather-badges">💧 {weather_data['humidity']}% • 💨 {weather_data['wind_speed']} m/s</p>
-        </div>
-        """, unsafe_allow_html=True)
-    except Exception as e:
-        st.error(f"Weather unavailable: {e}")
+# Weather display in top right
+try:
+    from agent.tools import current_weather
+    # Use sidebar-controlled default city
+    weather_data = current_weather(default_city)
+    st.markdown(f"""
+    <div class="weather-card">
+        <h4>🌤️ {weather_data['city']}</h4>
+        <p style="font-size: 22px; font-weight: 800;">{weather_data['temperature']}°C</p>
+        <p style="color: #d1d5db;">{weather_data['conditions'].title()}</p>
+        <p class="weather-badges">💧 {weather_data['humidity']}% • 💨 {weather_data['wind_speed']} m/s</p>
+    </div>
+    """, unsafe_allow_html=True)
+except Exception as e:
+    st.error(f"Weather unavailable: {e}")
 
 if st.session_state.graph is None and vector_exists:
     with st.spinner("Initializing agent..."):
@@ -195,6 +207,7 @@ if prompt := st.chat_input("Ask me anything about our wine business..."):
                         "content": error_msg
                     })
 
-# Footer pinned after chat input
-st.divider()
-st.markdown("<div style=\"margin-top: 8px; opacity: 0.8;\">Powered by Gemini, Tavily, and OpenWeather APIs</div>", unsafe_allow_html=True)
+# Footer pinned visually near the chat input (non-interactive)
+st.markdown("""
+<div class="powered-footer">Powered by Gemini, Tavily, and OpenWeather APIs</div>
+""", unsafe_allow_html=True)
