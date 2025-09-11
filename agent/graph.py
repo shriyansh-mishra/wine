@@ -42,7 +42,7 @@ def router(state: AgentState) -> str:
 
 def node_rag(state: AgentState) -> AgentState:
 	query = state["query"]
-	if any(word in query.lower() for word in ["variety", "
+	if any(word in query.lower() for word in ["variety", "varieties", "types", "kinds", "produce", "make"]):
 		search_query = "Rhythm Vineyard plantings include Cabernet Sauvignon Merlot Cabernet Franc Petit Verdot Malbec Sauvignon Blanc Sémillon"
 	else:
 		search_query = query
