@@ -123,7 +123,7 @@ try:
     weather_data = current_weather(default_city)
     st.markdown(f"""
     <div class="weather-card">
-        <h4>🌤️ {weather_data['city']}</h4>
+        <h4>🌤️ {weather_data['city'].upper()[0]+weather_data['city'][1:]}</h4>
         <p style="font-size: 22px; font-weight: 800;">{weather_data['temperature']}°C</p>
         <p style="color: #d1d5db;">{weather_data['conditions'].title()}</p>
         <p class="weather-badges">💧 {weather_data['humidity']}% • 💨 {weather_data['wind_speed']} m/s</p>
