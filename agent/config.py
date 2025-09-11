@@ -25,7 +25,6 @@ TIMEZONE = os.getenv("TZ", "America/Los_Angeles")
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.0-flash")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-004")
 
-# API keys (do not fail hard here to allow partial functionality during dev)
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
