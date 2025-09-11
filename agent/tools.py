@@ -58,17 +58,82 @@ def _normalize_city_query(city: str) -> List[str]:
 	return queries
 
 
+def _pick_best_location(city: str, candidates: List[Dict[str, Any]]) -> Optional[Dict[str, float]]:
+	"""Pick the most likely geocode result.
+
+	Strategy:
+	- If any candidate has the highest 'population', prefer that
+	- For globally known cities, prefer expected country (e.g., Delhi -> IN)
+	- Fallback to the first candidate
+	"""
+	city_l = city.lower().strip()
+	preferred_country_by_city: Dict[str, str] = {
+		"delhi": "IN",
+		"new delhi": "IN",
+		"paris": "FR",
+		"london": "GB",
+		"berlin": "DE",
+		"madrid": "ES",
+		"rome": "IT",
+		"tokyo": "JP",
+		"osaka": "JP",
+		"seoul": "KR",
+		"singapore": "SG",
+		"shanghai": "CN",
+		"beijing": "CN",
+		"mexico city": "MX",
+		"sydney": "AU",
+		"toronto": "CA",
+		"vancouver": "CA",
+	}
+
+	preferred_country = preferred_country_by_city.get(city_l)
+	if preferred_country:
+		for item in candidates:
+			if item.get("country") == preferred_country:
+				return {"lat": item["lat"], "lon": item["lon"]}
+
+	# Prefer highest population if available
+	best = None
+	best_pop = -1
+	for item in candidates:
+		pop = int(item.get("population", -1) or -1)
+		if pop > best_pop:
+			best = item
+			best_pop = pop
+	if best is not None:
+		return {"lat": best["lat"], "lon": best["lon"]}
+
+	# Fallback to first
+	if candidates:
+		first = candidates[0]
+		return {"lat": first["lat"], "lon": first["lon"]}
+	return None
+
+
 def geocode_city(city: str) -> Optional[Dict[str, float]]:
 	if not OPENWEATHER_API_KEY:
 		raise RuntimeError("OPENWEATHER_API_KEY is required for weather")
-	for query in _normalize_city_query(city):
-		params = {"q": query, "limit": 1, "appid": OPENWEATHER_API_KEY}
+	parts = [p.strip() for p in city.split(",") if p.strip()]
+	if len(parts) <= 1:
+		# City only: fetch multiple and pick best candidate
+		params = {"q": city, "limit": 5, "appid": OPENWEATHER_API_KEY}
 		resp = requests.get("https://api.openweathermap.org/geo/1.0/direct", params=params, timeout=15)
 		resp.raise_for_status()
-		data = resp.json()
-		if data:
-			return {"lat": data[0]["lat"], "lon": data[0]["lon"]}
-	return None
+		data = resp.json() or []
+		if not data:
+			return None
+		return _pick_best_location(city, data)
+	else:
+		# City + region provided: try normalized combinations deterministically
+		for query in _normalize_city_query(city):
+			params = {"q": query, "limit": 1, "appid": OPENWEATHER_API_KEY}
+			resp = requests.get("https://api.openweathermap.org/geo/1.0/direct", params=params, timeout=15)
+			resp.raise_for_status()
+			data = resp.json()
+			if data:
+				return {"lat": data[0]["lat"], "lon": data[0]["lon"]}
+		return None
 
 
 def current_weather(city: Optional[str] = None, units: str = "metric") -> Dict[str, Any]:
