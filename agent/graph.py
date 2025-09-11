@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any, Dict, List
+import re
 
 from langgraph.graph import END, START, StateGraph
 from langgraph.checkpoint.memory import MemorySaver
@@ -40,6 +41,10 @@ def router(state: AgentState) -> str:
 	return "search"
 
 
+def _normalize_text(text: str) -> str:
+	return re.sub(r"\s+", " ", text).strip()
+
+
 def node_rag(state: AgentState) -> AgentState:
 	query = state["query"]
 	if any(word in query.lower() for word in ["variety", "varieties", "types", "kinds", "produce", "make"]):
@@ -48,7 +53,10 @@ def node_rag(state: AgentState) -> AgentState:
 		search_query = query
 	
 	docs = retrieve(search_query, k=10)
-	context = [f"Source[{i+1}] p{d.metadata.get('page', '?')}: {d.page_content}" for i, d in enumerate(docs)]
+	context = [
+		f"Source[{i+1}] p{d.metadata.get('page', '?')}: {_normalize_text(d.page_content)}"
+		for i, d in enumerate(docs)
+	]
 	prompt = (
 		"You are a helpful assistant for a Napa Valley wine business. Answer strictly based on the provided context. "
 		"Cite sources as [1], [2], ... corresponding to the excerpts. If unknown, say you don't know.\n\n"
