@@ -19,3 +19,6 @@ dependencies = [
     "streamlit>=1.49.1",
     "tavily-python>=0.5.0",
 ]
+
+[tool.poetry]
+package-mode = false
