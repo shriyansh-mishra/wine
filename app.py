@@ -19,6 +19,35 @@ st.set_page_config(
     layout="wide"
 )
 
+# Global styles: make weather card prominent and fixed on desktop
+st.markdown(
+    """
+    <style>
+    .weather-card {
+        position: fixed;
+        top: 70px;
+        right:44px;
+        width: 320px;
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        color: #e5e7eb;
+        padding: 14px 16px;
+        border-radius: 14px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.08);
+        z-index: 100;
+    }
+    .weather-card h4 { margin: 0 0 6px 0; font-weight: 700; }
+    .weather-card p { margin: 0; }
+    .weather-badges { font-size: 12px; color: #9ca3af; margin-top: 6px; }
+    /* On small screens, let it flow normally */
+    @media (max-width: 900px) {
+        .weather-card { position: static; width: 100%; margin-top: 12px; }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Initialize session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -81,11 +110,11 @@ with col2:
         # Use sidebar-controlled default city
         weather_data = current_weather(default_city)
         st.markdown(f"""
-        <div style="background-color: #f0f2f6; padding: 10px; border-radius: 10px; text-align: center;">
+        <div class="weather-card">
             <h4>🌤️ {weather_data['city']}</h4>
-            <p style="margin: 0; font-size: 18px; font-weight: bold;">{weather_data['temperature']}°C</p>
-            <p style="margin: 0; color: #666;">{weather_data['conditions'].title()}</p>
-            <p style="margin: 0; font-size: 12px; color: #888;">💧 {weather_data['humidity']}% | 💨 {weather_data['wind_speed']} m/s</p>
+            <p style="font-size: 22px; font-weight: 800;">{weather_data['temperature']}°C</p>
+            <p style="color: #d1d5db;">{weather_data['conditions'].title()}</p>
+            <p class="weather-badges">💧 {weather_data['humidity']}% • 💨 {weather_data['wind_speed']} m/s</p>
         </div>
         """, unsafe_allow_html=True)
     except Exception as e:
@@ -166,6 +195,6 @@ if prompt := st.chat_input("Ask me anything about our wine business..."):
                         "content": error_msg
                     })
 
-# Footer
+# Footer pinned after chat input
 st.divider()
-st.caption("Powered by Gemini, Tavily, and OpenWeather APIs")
+st.markdown("<div style=\"margin-top: 8px; opacity: 0.8;\">Powered by Gemini, Tavily, and OpenWeather APIs</div>", unsafe_allow_html=True)
