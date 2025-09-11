@@ -1,19 +1,29 @@
-### Wine Business Conversational Concierge 🍷
+<div align="center">
 
-#### Wineagent website 
-🔗[wineagent.streamlit.app](https://wineagent.streamlit.app/)
+  ## Wine Business Conversational Concierge 🍷  
+  #### Wineagent website 🔗[wineagent.streamlit.app](https://wineagent.streamlit.app/)
 
-- Tech Stack: ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white) ![LangGraph](https://img.shields.io/badge/LangGraph-0.6-000000?logo=protocols&logoColor=white) ![LangChain](https://img.shields.io/badge/LangChain-0.3-4B8BBE)
-- AI: ![Gemini](https://img.shields.io/badge/Gemini-2.5_Pro-4285F4?logo=google&logoColor=white)
-- Search: ![Tavily](https://img.shields.io/badge/Tavily-API-8A2BE2)
-- Weather: ![OpenWeather](https://img.shields.io/badge/OpenWeather-API-F05032)
-- UI: ![Streamlit](https://img.shields.io/badge/Streamlit-1.49-FF4B4B?logo=streamlit&logoColor=white)
+  <p>
+    <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" />
+    <img src="https://img.shields.io/badge/LangGraph-0.6-000000?logo=protocols&logoColor=white" />
+    <img src="https://img.shields.io/badge/LangChain-0.3-4B8BBE" />
+    <img src="https://img.shields.io/badge/Gemini-2.5_Pro-4285F4?logo=google&logoColor=white" />
+    <img src="https://img.shields.io/badge/Tavily-API-8A2BE2" />
+    <img src="https://img.shields.io/badge/OpenWeather-API-F05032" />
+    <img src="https://img.shields.io/badge/Streamlit-1.49-FF4B4B?logo=streamlit&logoColor=white" />
+  </p>
 
-What this is
-- A smart, fast agent for a Napa Valley wine business: answers from the company corpus, performs live web search with citations, and shows real-time weather.
+</div>
+
+
+
+#### What this is
+- A conversational concierge for a Napa Valley wine business. It answers company-specific questions from a PDF (RAG), performs live web search with citations, and shows real-time weather. Built with LangGraph + Gemini for routing and reasoning, Tavily for fresh links, OpenWeather for conditions, and a polished Streamlit UI with sources, web results, and a fixed weather card.
 - Built with a router-first graph that chooses between in-house knowledge (RAG), the web, or weather tools.
 
-How it works (architecture)
+![preview](assests/image.png)
+
+#### How it works (architecture)
 - Ingestion & Indexing 📜
   - The PDF corpus is chunked (≈1K chars, overlap ≈150) and embedded via Gemini embeddings.
   - Chunks and embeddings are stored locally in a lightweight JSON vector store for portability and speed.
@@ -40,11 +50,11 @@ UX details
 - Streamlit UI provides: chat panel, source expander, web results expander, re‑ingest button, and a fixed weather card.
 - Assistant responses are neatly formatted with mode icons and clean spacing.
 
-Why this design
+#### Why this design
 - Separation of concerns: Tavily handles finding fresh links; Gemini handles reasoning and summarization; OpenWeather handles weather; RAG keeps answers grounded to the PDF.
 - Local, simple vector storage avoids async issues and speeds up startup while remaining easy to version and inspect.
 
-Folder map (high level) 📁
+#### Folder map (high level) 📁
 - `agent/ingest.py`: PDF → chunks → embeddings → JSON store
 - `agent/rag.py`: cosine similarity retrieval over stored embeddings
 - `agent/tools.py`: Tavily web search, OpenWeather geocoding + current weather
@@ -52,7 +62,7 @@ Folder map (high level) 📁
 - `app.py`: Streamlit interface with weather card and rich citations
 - `main.py`: CLI with ingestion and chat modes
 
-![preview](assests\image.png)
+
 ---
 
 #### Made by Shriyansh mishra : [mishrashriyansh@outlook.com](mailto:mishrashriyansh@outlook.com)
