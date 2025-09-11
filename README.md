@@ -1,6 +1,8 @@
 ### Wine Business Conversational Concierge 🍷
 
-Badges
+#### Wineagent website 
+🔗[wineagent.streamlit.app](https://wineagent.streamlit.app/)
+
 - Tech Stack: ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white) ![LangGraph](https://img.shields.io/badge/LangGraph-0.6-000000?logo=protocols&logoColor=white) ![LangChain](https://img.shields.io/badge/LangChain-0.3-4B8BBE)
 - AI: ![Gemini](https://img.shields.io/badge/Gemini-2.5_Pro-4285F4?logo=google&logoColor=white)
 - Search: ![Tavily](https://img.shields.io/badge/Tavily-API-8A2BE2)
