@@ -180,7 +180,9 @@ if prompt := st.chat_input("Ask me anything about our wine business..."):
                     answer = result.get("result", {}).get("answer", "Sorry, I couldn't process that.")
                     mode = result.get("mode", "unknown")
                     
-                    st.markdown(answer)
+                    # Prettier formatted assistant output
+                    mode_emoji = {"rag": "📜", "search": "🔍", "weather": "🌤️"}.get(mode, "🤖")
+                    st.markdown(f"### {mode_emoji} Response\n\n{answer}")
                     
                     metadata = {}
                     if "citations" in result.get("result", {}):
@@ -190,8 +192,7 @@ if prompt := st.chat_input("Ask me anything about our wine business..."):
                     if "raw" in result.get("result", {}):
                         metadata["raw"] = result["result"]["raw"]
                     
-                    mode_emoji = {"rag": "📄", "search": "🔍", "weather": "🌤️"}.get(mode, "❓")
-                    st.caption(f"{mode_emoji} Used: {mode}")
+                    st.caption(f"Used: {mode}")
                     
                     st.session_state.messages.append({
                         "role": "assistant", 
