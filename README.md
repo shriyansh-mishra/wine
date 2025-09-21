@@ -15,7 +15,13 @@
 
 </div>
 
+### *Demo Video 👇🏻*
+<a href="https://www.loom.com/share/ef073d740ad941deafbe73145f001b26?sid=4c57a599-4793-4c79-8b77-0710ee0a11b3">
+  <img src="https://tse3.mm.bing.net/th/id/OIP.1KSc1AX282HhOEkQdkws3QHaCS?w=1217&h=375&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Loom" width="90"/>
+</a>
 
+### Cold start⚠️
+`App sometimes may take 1-2 mins after the during cold start !`
 
 #### What this is
 - A conversational concierge for a Napa Valley wine business. It answers company-specific questions from a PDF (RAG), performs live web search with citations, and shows real-time weather. Built with LangGraph + Gemini for routing and reasoning, Tavily for fresh links, OpenWeather for conditions, and a polished Streamlit UI with sources, web results, and a fixed weather card.
