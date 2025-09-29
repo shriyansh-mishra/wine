@@ -8,9 +8,11 @@
     <img src="https://img.shields.io/badge/LangGraph-0.6-000000?logo=protocols&logoColor=white" />
     <img src="https://img.shields.io/badge/LangChain-0.3-4B8BBE" />
     <img src="https://img.shields.io/badge/Gemini-2.5_Pro-4285F4?logo=google&logoColor=white" />
-    <img src="https://img.shields.io/badge/Tavily-API-8A2BE2" />
+    <img src="https://img.shields.io/badge/Tavily-API-8A2BE2" /> <br>
     <img src="https://img.shields.io/badge/OpenWeather-API-F05032" />
     <img src="https://img.shields.io/badge/Streamlit-1.49-FF4B4B?logo=streamlit&logoColor=white" />
+    <img alt="Code Style" src="https://img.shields.io/badge/code%20style-prettier-ff69b4">
+    <img alt="Repo Size" src="https://img.shields.io/github/repo-size/shriyansh-mishra/wine">
   </p>
 
 </div>
